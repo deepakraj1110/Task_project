@@ -143,8 +143,8 @@ function opent(x) {
  
   let a = localStorage.getItem("tasky");
   let t = JSON.parse(a);
-  let faveGif = t.cards.map(faveGif => faveGif.id);
-  let index = faveGif.findIndex(id => id == x);
+  let Task1 = t.cards.map(Task1 => Task1.id);
+  let index = Task1.findIndex(id => id == x);
   
   
   document.getElementsByClassName("c1")[0].setAttribute("src",t.cards[index].imageUrl);
