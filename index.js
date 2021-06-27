@@ -13,7 +13,7 @@ const newCard=(taskData)=> `<div class="col-md-6 col-lg-4" id=${taskData.id}>
     <span class="badge bg-primary">${taskData.taskType}</span>
   </div>
   <div class="card-footer text-muted ">
-    <button type="button" id=${taskData.id} class="btn btn-outline-primary float-end">Open Task </button>
+    <button type="button" id=${taskData.id} onclick="opent(${taskData.id})" class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#example">Open Task </button>
   </div>
 </div>
  </div>`;
@@ -138,4 +138,21 @@ const saveEditchanges = (event) => {
   submit.innerHTML="Open Task";
   
 };
+
+function opent(x) {
+ 
+  let a = localStorage.getItem("tasky");
+  let t = JSON.parse(a);
+  let faveGif = t.cards.map(faveGif => faveGif.id);
+  let index = faveGif.findIndex(id => id == x);
+  
+  
+  document.getElementsByClassName("c1")[0].setAttribute("src",t.cards[index].imageUrl);
+  document.getElementsByClassName("c2")[0].innerHTML=t.cards[index].taskTitle;
+  document.getElementsByClassName("c3")[0].innerHTML=t.cards[index].taskDescription;
+  document.getElementsByClassName("c4")[0].innerHTML=t.cards[index].taskType;
+
+}
+ 
+
 
