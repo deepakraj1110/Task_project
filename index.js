@@ -3,7 +3,7 @@ let globalStore=[];
 const newCard=(taskData)=> `<div class="col-md-6 col-lg-4" id=${taskData.id}>
             <div class="card rounded-3 border-dark ">
   <div class="card-header d-flex justify-content-end gap-2">
-    <button type="button" class="btn btn-outline-success"><i class="fas fa-user-edit"></i></button>
+    <button type="button" class="btn btn-outline-success"id=${taskData.id} onclick="editCard.apply(this,arguments)"><i id=${taskData.id} onclick="editCard.apply(this,arguments)" class="fas fa-user-edit"></i></button>
     <button type="button" class="btn btn-outline-danger" id=${taskData.id} onclick="deleteCard.apply(this,arguments)"><i id=${taskData.id} onclick="deleteCard.apply(this,arguments)" class="fas fa-dumpster"></i></button>
   </div>
   <img src=${taskData.imageurl} class="card-img-top" alt="car">
@@ -13,7 +13,7 @@ const newCard=(taskData)=> `<div class="col-md-6 col-lg-4" id=${taskData.id}>
     <span class="badge bg-primary">${taskData.taskType}</span>
   </div>
   <div class="card-footer text-muted ">
-    <button type="button" class="btn btn-outline-primary float-end">Open Task </button>
+    <button type="button" id=${taskData.id} class="btn btn-outline-primary float-end">Open Task </button>
   </div>
 </div>
  </div>`;
@@ -35,7 +35,7 @@ const loadData = () =>{
 const SaveChanges = () => {
     const taskData ={
        id:`${Date.now()}`,
-       imageurl: document.getElementById("imageurl").value,
+       imageUrl: document.getElementById("imageurl").value,
        taskTitle:document.getElementById("tasktitle").value,
        taskType:document.getElementById("tasktype").value,
        taskDescription:document.getElementById("taskdescription").value, 
@@ -59,14 +59,83 @@ localStorage.setItem("tasky",JSON.stringify({cards:globalStore}));
  
 if (tagname==="BUTTON"){
   return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode);
-}
+};
 
 return taskContainer.removeChild(event.target.parentNode.parentNode.parentNode.parentNode);
 
  };
 
 
+const editCard=(event)=>{
+  event=window.event;
+  const targetID=event.target.id;
+  const tagname=event.target.tagName;
+   
+  let parentElement;
 
+ if(tagname==="BUTTON"){
+   parentElement=event.target.parentNode.parentNode;
+ } else{
+  parentElement=event.target.parentNode.parentNode.parentNode;}
 
+  let taskTitle = parentElement.childNodes[5].childNodes[1];
+  let taskType = parentElement.childNodes[5].childNodes[3];
+  let taskDescription = parentElement.childNodes[5].childNodes[5];
+  let submit=parentElement.childNodes[7].childNodes[1];
+  
+  
+  taskTitle.setAttribute("contenteditable","true");
+  taskType.setAttribute("contenteditable","true");
+  taskDescription.setAttribute("contenteditable","true");
+  submit.setAttribute("onclick","saveEditchanges.apply(this,arguments)");
+  submit.innerHTML="Save Changes";
+ 
 
+};
+
+const saveEditchanges = (event) => {
+  event = window.event;
+  const targetID = event.target.id;
+  const tagname = event.target.tagName;
+
+  let parentElement;
+
+  if (tagname === "BUTTON") {
+    parentElement = event.target.parentNode.parentNode;
+  } else {
+    parentElement = event.target.parentNode.parentNode.parentNode;
+  }
+
+  let taskTitle = parentElement.childNodes[5].childNodes[1];
+  let taskDescription = parentElement.childNodes[5].childNodes[3];
+  let taskType = parentElement.childNodes[5].childNodes[5];
+  let submit = parentElement.childNodes[7].childNodes[1];
+
+  const updatedData = {
+    taskTitle: taskTitle.innerHTML,
+    taskType: taskType.innerHTML,
+    taskDescription: taskDescription.innerHTML,
+  };
+
+  globalStore = globalStore.map((task) => {
+    if (task.id === targetID) {
+      return {
+        id: task.id,
+        imageUrl: task.imageUrl,
+        taskTitle: updatedData.taskTitle,
+        taskType: updatedData.taskType,
+        taskDescription: updatedData.taskDescription,
+      };
+    }
+    return task;
+  });
+  
+  localStorage.setItem("tasky",JSON.stringify({cards:globalStore}));
+  taskTitle.setAttribute("contenteditable","false");
+  taskType.setAttribute("contenteditable","false");
+  taskDescription.setAttribute("contenteditable","false");
+  submit.removeAttribute("onclick");
+  submit.innerHTML="Open Task";
+  
+};
 
