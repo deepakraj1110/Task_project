@@ -6,14 +6,14 @@ const newCard=(taskData)=> `<div class="col-md-6 col-lg-4" id=${taskData.id}>
     <button type="button" class="btn btn-outline-success"id=${taskData.id} onclick="editCard.apply(this,arguments)"><i id=${taskData.id} onclick="editCard.apply(this,arguments)" class="fas fa-user-edit"></i></button>
     <button type="button" class="btn btn-outline-danger" id=${taskData.id} onclick="deleteCard.apply(this,arguments)"><i id=${taskData.id} onclick="deleteCard.apply(this,arguments)" class="fas fa-dumpster"></i></button>
   </div>
-  <img src=${taskData.imageurl} class="card-img-top" alt="car">
+  <img src=${taskData.imageUrl} class="card-img-top" alt="car">
   <div class="card-body">
     <h5 class="card-title">${taskData.taskTitle}</h5>
     <p class="card-text">${taskData.taskDescription}</p>
     <span class="badge bg-primary">${taskData.taskType}</span>
   </div>
   <div class="card-footer text-muted ">
-    <button type="button" id=${taskData.id} onclick="opent(${taskData.id})" class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#example">Open Task </button>
+    <button type="button" id=${taskData.id}  onclick="opent(${taskData.id})" class="btn btn-outline-primary float-end" data-bs-toggle="modal" data-bs-target="#example">Open Task </button>
   </div>
 </div>
  </div>`;
@@ -152,7 +152,7 @@ function opent(x) {
   document.getElementsByClassName("c3")[0].innerHTML=t.cards[index].taskDescription;
   document.getElementsByClassName("c4")[0].innerHTML=t.cards[index].taskType;
 
-}
+};
  
 
 
